@@ -16,7 +16,7 @@
 
       <div class="collapse navbar-collapse" id="orange-navbar-collapse">
         <% unless @hide_search_box %>
-            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-right", role: "search" do %>
+            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-left", role: "search" do %>
                 <div class="input-group">
                   <input type="text" class="form-control" name='q' placeholder="Search training..."/>
                   <div class="input-group-btn">
