@@ -73,6 +73,25 @@
                 <%= render_markdown(EventsHelper::EVENTS_INFO) %>
             <% end %>
             <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
+          </div>
+          <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
+        </div>
+    <% end %>
+
+    <%# ACTUAL RESULTS LIST %>
+    <% unless @events.blank? %>
+      <div class="row">
+        <ul class="nav nav-tabs col-md-3">
+          <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
+          <%= tab('Map', 'fa fa-globe', 'map',
+                  disabled: { check: (search_and_facet_params[:online] == 'true'),
+                              message: 'Only showing online events.' }) %>
+        </ul>
+        <div class='col-md-3'> 
+          <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
+          <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
+        </div>
+        <div class= ''> 
             <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
               <i class="fa fa-filter"></i> Filters
             </button>
@@ -88,25 +107,10 @@
             <%= link_to button_params, class: 'btn btn-default' do %>
                 <i class="fa fa-hourglass-end"></i> <%= button_text %> past events
             <% end %>
-          </div>
-          <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
+          <%= render partial: "search/common/sort_by",
+                      locals: { resource: @events,
+                                extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
         </div>
-    <% end %>
-
-    <%# ACTUAL RESULTS LIST %>
-    <% unless @events.blank? %>
-      <div class="row">
-        <ul class="nav nav-tabs col-md-8">
-          <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
-          <%= tab('Map', 'fa fa-globe', 'map',
-                  disabled: { check: (search_and_facet_params[:online] == 'true'),
-                              message: 'Only showing online events.' }) %>
-          <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
-          <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
-        </ul>
-        <%= render partial: "search/common/sort_by",
-                    locals: { resource: @events,
-                              extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
       </div>
 
         <div class="tab-content">
