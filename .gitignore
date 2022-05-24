@@ -29,3 +29,4 @@ letsencrypt
 docker-volumes
 
 /config/master.key
+TeSS.code-workspace
