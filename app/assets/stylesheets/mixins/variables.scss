@@ -5,19 +5,19 @@ $elixir-blue: #005472;
 $elixir-green: #bebf32;
 $elixir-dark-green: #b4bcac;
 $elixir-purple: #6c586c;
-
-/* TeSS colours */
-$bgDefault: $elixir-orange;
-$bgHighlight: darken($bgDefault, 10%);
-$colDefault: #ffe6d1;
-$colHover: #333333;
-$colHover2: #eeeeee;
-
+$elixir-dark-blue: #19224e;
 $grey-blue: #8CA0A6;
-
 $blue: #206B82;
 $blue2: #085871; /* unused? */
 $blue3: #064559; /* unused? */
+
+/* TeSS colours */
+$bgDefault: $elixir-dark-blue;
+$bgHighlight: darken($bgDefault, 10%);
+$colDefault: white;
+$colHover: #333333;
+$colHover2: #eeeeee;
+
 
 /* Bootstrap variable tweaks */
 /* For reference, see:

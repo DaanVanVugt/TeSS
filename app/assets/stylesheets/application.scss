@@ -975,6 +975,8 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   position: relative;
   display: block;
   padding: 10px 15px;
+  background-color: white;
+
 
   .list-card-heading {
     display: block;
