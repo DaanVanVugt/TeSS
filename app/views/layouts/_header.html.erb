@@ -26,13 +26,27 @@
             <% end %>
         <% end %>
         <%= menu_group do %>
-          <%= menu_item "Events", events_path %>
-          <%= menu_item "Materials", materials_path %>
-          <%#= menu_item "e-Learning", elearning_materials_path %>
-          <%#= menu_item "Workflows", workflows_path %>
-          <%#= menu_item "Collections", collections_path %>
-          <%#= menu_item "Providers", content_providers_path %>
-          <%= menu_item "About", about_path %>
+          <% if TeSS::Config.feature['events'.to_sym] == true %>
+            <%= menu_item "Events", events_path %>
+          <% end %>
+          <% if TeSS::Config.feature['materials'.to_sym] == true %>
+            <%= menu_item "Materials", materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['e-learning'.to_sym] == true %>
+            <%= menu_item "e-Learning", elearning_materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['workflows'.to_sym] == true %>
+            <%= menu_item "Workflows", workflows_path %>
+          <% end %>
+          <% if TeSS::Config.feature['collections'.to_sym] == true %>
+            <%= menu_item "Collections", collections_path %>
+          <% end %>
+          <% if TeSS::Config.feature['providers'.to_sym] == true %>
+            <%= menu_item "Providers", content_providers_path %>
+          <% end %>
+          <% if TeSS::Config.feature['about'.to_sym] == true %>
+            <%= menu_item "About", about_path %>
+          <% end %>
         <% end %>
         <div class="user-options">
           <% if user_signed_in? %>
