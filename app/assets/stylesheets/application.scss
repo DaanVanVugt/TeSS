@@ -46,7 +46,6 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  // background-color: #ddd;
   background-color: #e4e4ea;
   border-top-width: 2px;
   border-bottom-width: 0px;
@@ -292,12 +291,12 @@ ul.unstyled {
 .nav-item.active > a {
   position: relative;
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
 }
 
 .nav-item.active > a:hover {
   color: #ffffff;
-  background-color: $blue;
+  background-color: $contrast;
 }
 
 // End CKAN's sidebar facets
@@ -317,10 +316,10 @@ ul.unstyled {
 
 .filter-button {
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
 
   &:hover {
-    background-color: $blue !important;
+    background-color: $contrast !important;
   }
 }
 
@@ -392,7 +391,7 @@ ul.unstyled {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  color: #337ab7;
+  color: $contrast;
 }
 
 .content_action {
@@ -471,7 +470,7 @@ abbr, accronym {
 
 .keyword-pill {
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
   margin-bottom: 5px;
   display: inline-block;
   font-weight: normal;
@@ -716,7 +715,7 @@ sup {
 }
 
 .btn-elixir {
-  @include button-variant(white, $elixir-orange, white);
+  @include button-variant(white, $taxila-purple, white);
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;

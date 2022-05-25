@@ -1,18 +1,14 @@
-/* Elixir brand colours */
-$elixir-orange: #f47d20;
-$elixir-grey: #484848;
-$elixir-blue: #005472;
-$elixir-green: #bebf32;
-$elixir-dark-green: #b4bcac;
-$elixir-purple: #6c586c;
-$elixir-dark-blue: #19224e;
-$grey-blue: #8CA0A6;
-$blue: #206B82;
-$blue2: #085871; /* unused? */
-$blue3: #064559; /* unused? */
+/* Taxila brand colours, from https://paletton.com/#uid=62q0u0kcOox4zCh8vtdgTkVligL */
+$taxila-green: #99B46C;
+$taxila-purple: #A26181;
+$taxila-dark-purple: #6F2549;
+$taxila-purple2: #8A4165;
+$contrast: $taxila-dark-purple;
+$contrast2: $taxila-purple2;
 
 /* TeSS colours */
-$bgDefault: $elixir-dark-blue;
+$brand-primary: $taxila-purple;
+$bgDefault: $taxila-green;
 $bgHighlight: darken($bgDefault, 10%);
 $colDefault: white;
 $colHover: #333333;
@@ -25,15 +21,15 @@ $colHover2: #eeeeee;
 
 /* ### Pre-load tweaks. Anything that will effect Bootstrap's derived variables needs to be declared here */
 
-$link-color: $blue;
+$link-color: $contrast;
 $link-hover-color: lighten($link-color, 10%);
 $link-hover-decoration: none;
 
-$btn-primary-bg: $blue;
+$btn-primary-bg: $contrast;
 
-$pagination-color: $blue;
-$pagination-active-bg: $blue;
-$pagination-active-border: $blue;
+$pagination-color: $contrast;
+$pagination-active-bg: $contrast;
+$pagination-active-border: $contrast;
 
 $navbar-height: 60px;
 $navbar-default-bg: $bgDefault;
