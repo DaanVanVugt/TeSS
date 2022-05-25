@@ -7,6 +7,15 @@ default: &default
   prevent_robot_indexing: false
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
+  feature:
+    events: true
+    materials: true
+    e-learning: false
+    workflows: false
+    collections: false
+    providers: false
+    about: true
+
 
 development:
   <<: *default

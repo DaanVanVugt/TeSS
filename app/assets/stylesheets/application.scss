@@ -37,6 +37,7 @@ body {
   margin: 0;
   padding-bottom: 150px;
   min-height: 100%;
+  background-color: #e4e4ea;
 }
 
 .footer {
@@ -45,7 +46,13 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #ddd;
+  background-color: #e4e4ea;
+  border-top-width: 2px;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  border-color: #d1d5db;
+  border-style: solid;
 
   .container {
     padding: 0;
@@ -229,6 +236,9 @@ div.wrapper {
 
 .wide .media-item {
   width: 186px;
+  .long{
+    width: 90%;
+  }
 }
 
 .listing_image {
@@ -284,12 +294,12 @@ ul.unstyled {
 .nav-item.active > a {
   position: relative;
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
 }
 
 .nav-item.active > a:hover {
   color: #ffffff;
-  background-color: $blue;
+  background-color: $contrast;
 }
 
 // End CKAN's sidebar facets
@@ -309,10 +319,10 @@ ul.unstyled {
 
 .filter-button {
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
 
   &:hover {
-    background-color: $blue !important;
+    background-color: $contrast !important;
   }
 }
 
@@ -347,6 +357,7 @@ ul.unstyled {
 .search-results-count {
   font-size: medium;
   font-weight: bold;
+  margin-top: 10px;
   margin-top: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
@@ -384,7 +395,7 @@ ul.unstyled {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  color: #337ab7;
+  color: $contrast;
 }
 
 .content_action {
@@ -463,7 +474,7 @@ abbr, accronym {
 
 .keyword-pill {
   color: #ffffff;
-  background-color: $grey-blue;
+  background-color: $contrast2;
   margin-bottom: 5px;
   display: inline-block;
   font-weight: normal;
@@ -708,7 +719,7 @@ sup {
 }
 
 .btn-elixir {
-  @include button-variant(white, $elixir-orange, white);
+  @include button-variant(white, $taxila-purple, white);
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;
@@ -967,6 +978,8 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   position: relative;
   display: block;
   padding: 10px 15px;
+  background-color: white;
+
 
   .list-card-heading {
     display: block;
