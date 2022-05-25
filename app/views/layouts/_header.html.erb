@@ -15,16 +15,6 @@
       </div>
 
       <div class="collapse navbar-collapse" id="orange-navbar-collapse">
-        <% unless @hide_search_box %>
-            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-left", role: "search" do %>
-                <div class="input-group">
-                  <input type="text" class="form-control" name='q' placeholder="Search training..."/>
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-            <% end %>
-        <% end %>
         <%= menu_group do %>
           <% if TeSS::Config.feature['events'.to_sym] == true %>
             <%= menu_item "Events", events_path %>
@@ -47,6 +37,16 @@
           <% if TeSS::Config.feature['about'.to_sym] == true %>
             <%= menu_item "About", about_path %>
           <% end %>
+        <% end %>
+        <% unless @hide_search_box %>
+            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-left", role: "search" do %>
+                <div class="input-group">
+                  <input type="text" class="form-control" name='q' placeholder="Search training..."/>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+            <% end %>
         <% end %>
         <div class="user-options">
           <% if user_signed_in? %>
