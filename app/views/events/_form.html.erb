@@ -21,19 +21,13 @@
     <%# Necessary to allow removal of all field locks %>
     <%= hidden_field_tag 'event[locked_fields][]', '' %>
 
-    <%= f.multi_input :keywords %>
-
     <%= f.input :title, as: :string, field_lock: true %>
 
-    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
-                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
-                field_lock: true %>
+    <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
     <%= f.input :start, as: :datetime_picker, field_lock: true %>
 
     <%= f.input :end, as: :datetime_picker, field_lock: true %>
-
-    <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
     <div class="form-group">
       <%= label_tag('type')%> <br/>
@@ -46,21 +40,27 @@
           <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
           <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
         </label>
-        <label class="btn btn-default <%= 'active' if @event.online? %>">
-          <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
-          <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Hybrid
+        <label class="btn btn-default <%= 'active' unless @event.online? %>">
+          <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
+          <%= icon_for(:face_to_face, :small)%> Hybrid
         </label>
       </div>
     </div>
+
+    <div class="address_content">
+      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
+    </div>
+
+    <%= f.multi_input :keywords %>
+
+    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
+                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
+                field_lock: true %>
 
     <%= collapsible_panel('Optional Settings', 'optional_settings') do %>
       <%= f.input :subtitle, field_lock: true %>
 
       <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
-
-      <div class="address_content">
-        <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
-      </div>
 
       <%= f.input :organizer, field_lock: true %>
 
