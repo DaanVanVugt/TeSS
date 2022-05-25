@@ -206,10 +206,6 @@ div.wrapper {
   //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
-.float-left {
-  float: left;
-}
-
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
 .dont-break-out {
 
@@ -355,8 +351,9 @@ ul.unstyled {
   font-size: medium;
   font-weight: bold;
   margin-top: 10px;
-  // margin-top: 5px;
-  // padding-top: 5px;
+  margin-top: 5px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 .welcome-text {
