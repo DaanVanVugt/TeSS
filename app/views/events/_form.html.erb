@@ -18,6 +18,23 @@
 
     <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
+    <%# Necessary to allow removal of all field locks %>
+    <%= hidden_field_tag 'event[locked_fields][]', '' %>
+
+    <%= f.multi_input :keywords %>
+
+    <%= f.input :title, as: :string, field_lock: true %>
+
+    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
+                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
+                field_lock: true %>
+
+    <%= f.input :start, as: :datetime_picker, field_lock: true %>
+
+    <%= f.input :end, as: :datetime_picker, field_lock: true %>
+
+    <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
+
     <div class="form-group">
       <%= label_tag('type')%> <br/>
       <div class="btn-group" data-toggle="buttons">
@@ -29,95 +46,84 @@
           <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
           <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
         </label>
+        <label class="btn btn-default <%= 'active' if @event.online? %>">
+          <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
+          <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Hybrid
+        </label>
       </div>
     </div>
 
-    <%# Necessary to allow removal of all field locks %>
-    <%= hidden_field_tag 'event[locked_fields][]', '' %>
+    <%= collapsible_panel('Optional Settings', 'optional_settings') do %>
+      <%= f.input :subtitle, field_lock: true %>
 
-    <%= f.input :title, as: :string, field_lock: true %>
+      <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
-    <%= f.input :subtitle, field_lock: true %>
-
-    <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
-
-    <%= f.input :start, as: :datetime_picker, field_lock: true %>
-
-    <%= f.input :end, as: :datetime_picker, field_lock: true %>
-
-    <div class="address_content">
-      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
-    </div>
-
-    <%= f.input :organizer, field_lock: true %>
-
-    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
-                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
-                field_lock: true %>
-
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
-
-    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
-
-    <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
-
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-
-    <%= f.multi_input :keywords %>
-
-    <%= f.multi_input :target_audience %>
-
-    <%= f.multi_input :host_institutions %>
-
-    <%= f.multi_input :sponsors %>
-
-    <%# TODO: add autocomplete to this field %>
-    <%= f.input :timezone, field_lock: true %>
-
-    <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
-
-    <%= f.input :capacity, field_lock: true %>
-
-    <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
-
-    <div class="form-group">
-      <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
-      <%= f.check_box :for_profit %>
-    </div>
-
-    <%= f.internal_resource :materials %>
-
-    <div class="row">
-      <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
-    </div>
-
-    <div class="form-group" id="external-resources">
-      <%= f.label :external_resources %>
-      <%= f.field_lock :external_resources %>
-
-      <div id="external-resources-list">
-        <% @event.external_resources.each_with_index do |external_resource, index| %>
-            <%= render partial: 'common/external_resource_form',
-                       locals: { form_name: 'event', index: index, external_resource: external_resource } %>
-        <% end %>
+      <div class="address_content">
+        <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
       </div>
+
+      <%= f.input :organizer, field_lock: true %>
+
+      <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+
+      <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
+
+      <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                          id_field: :uri, label_field: :preferred_label %>
+
+      <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                          id_field: :uri, label_field: :preferred_label %>
+
+      <%= f.multi_input :target_audience %>
+
+      <%= f.multi_input :host_institutions %>
+
+      <%= f.multi_input :sponsors %>
+
+      <%# TODO: add autocomplete to this field %>
+      <%= f.input :timezone, field_lock: true %>
+
+      <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
+
+      <%= f.input :capacity, field_lock: true %>
+
+      <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
+
+      <div class="form-group">
+        <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
+        <%= f.check_box :for_profit %>
+      </div>
+
+      <%= f.internal_resource :materials %>
 
       <div class="row">
-        <%= render :partial => 'common/fairsharing_suggestions', :locals => {:title_element => 'material_title'} %>
+        <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
       </div>
 
-      <div class="row">
-        <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
-      </div>
+      <div class="form-group" id="external-resources">
+        <%= f.label :external_resources %>
+        <%= f.field_lock :external_resources %>
 
-      <a href="#" id="add-external-resource-btn" class="btn btn-info">
-        <i class="fa fa-plus"></i> Add external resource
-      </a>
-    </div>
+        <div id="external-resources-list">
+          <% @event.external_resources.each_with_index do |external_resource, index| %>
+              <%= render partial: 'common/external_resource_form',
+                        locals: { form_name: 'event', index: index, external_resource: external_resource } %>
+          <% end %>
+        </div>
+
+        <div class="row">
+          <%= render :partial => 'common/fairsharing_suggestions', :locals => {:title_element => 'material_title'} %>
+        </div>
+
+        <div class="row">
+          <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
+        </div>
+
+        <a href="#" id="add-external-resource-btn" class="btn btn-info">
+          <i class="fa fa-plus"></i> Add external resource
+        </a>
+      </div>
+    <% end %>
 
     <div class="form-group">
       <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
