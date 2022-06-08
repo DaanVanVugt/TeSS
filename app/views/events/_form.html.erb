@@ -23,6 +23,8 @@
 
     <%= f.input :title, as: :string, field_lock: true %>
 
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+
     <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
     <%= f.input :start, as: :datetime_picker, field_lock: true %>
@@ -40,10 +42,6 @@
           <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
           <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
         </label>
-        <label class="btn btn-default <%= 'active' unless @event.online? %>">
-          <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
-          <%= icon_for(:face_to_face, :small)%> Hybrid
-        </label>
       </div>
     </div>
 
@@ -57,10 +55,8 @@
                 collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
                 field_lock: true %>
 
-    <%= collapsible_panel('Optional Settings', 'optional_settings') do %>
+    <%= collapsible_panel('Extra Settings', 'extra_settings') do %>
       <%= f.input :subtitle, field_lock: true %>
-
-      <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
       <%= f.input :organizer, field_lock: true %>
 

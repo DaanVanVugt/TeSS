@@ -100,7 +100,7 @@ class Event < ApplicationRecord
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   validates :title, :url, presence: true
-  validates :keywords, presence: true, length: { minimum: 1, message: 'Needs at least 1 keyword.' }
+  validates :keywords, length: { minimum: 1, message: 'Needs at least 1 keyword.' }
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
