@@ -11,6 +11,10 @@
 /log/*
 !/log/.keep
 /tmp
+config/secrets.yml
+config/sunspot.yml
+config/tess.yml
+config/ingestion.yml
 tmp/
 solr/test/
 solr/pids/
@@ -30,3 +34,6 @@ docker-volumes
 
 /config/master.key
 TeSS.code-workspace
+
+shared
+vendor/bundle

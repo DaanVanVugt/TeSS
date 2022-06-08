@@ -3,34 +3,13 @@
     <div class="row">
       <div class="col-sm-3 col-xs-8">
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
-        <%= link_to 'Add your training resources to TeSS', registering_resources_path, target: '_blank'  %><br/>
-        <%= link_to 'Source code', 'https://github.com/ElixirTeSS/TeSS', target: '_blank' %><br/>
+        <%= link_to "Add your training resources to #{TeSS::Config.site['title_short']}", registering_resources_path, target: '_blank'  %><br/>
+        <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %><br/>
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
         <%= link_to 'Privacy', privacy_path, target: '_blank' %>
       </div>
       <div class="col-sm-9 col-xs-4">
-        <div class="col-sm-12">
-          <%= link_to 'https://researchdata.nl/en/', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('rdnl_logo.svg') %>
-          <% end %>
-          <%= link_to 'https://www.surf.nl/', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('surf_logo.svg') %>
-          <% end %>
-          <%= link_to 'https://www.eurocc-access.eu/', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('eurocc_logo.svg') %>
-          <% end %>
-          <%= link_to 'https://www.esciencecenter.nl/', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('escience_center_logo.svg') %>
-          <% end %>
-          <%= link_to 'https://www.lcrdm.nl/en', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('national_coordination_point_logo.svg') %>
-          <% end %>
-        </div>
-        <div class="col-md-12 eu-notice hidden-xs">
-          <%= image_tag('eu_flag.svg') %>
-          TeSS is supported by ELIXIR through the <a href="http://www.elixir-europe.org/excelerate" target="_blank">ELIXIR-EXCELERATE grant</a>,
-          which is funded by the European Union Horizon 2020 program under grant agreement <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">676559</a>.
-        </div>
+        <%= render :partial => 'layouts/supported_by' %>
       </div>
     </div>
   </div>

@@ -15,6 +15,7 @@ $colHover2: #eeeeee;
 
 
 /* Bootstrap variable tweaks */
+
 /* For reference, see:
      https://github.com/twbs/bootstrap-sass/blob/3.2-stable/assets/stylesheets/bootstrap/_variables.scss */
 
@@ -46,6 +47,7 @@ $navbar-default-toggle-border-color: $bgHighlight;
 
 /* ### End pre-load tweaks */
 @import "bootstrap/variables";
+
 /* ### Post-load tweaks. Anything dependant on Bootstrap's variables needs to be declared below here */
 
 /* collapse navbar on md and smaller screens */
