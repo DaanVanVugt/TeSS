@@ -78,6 +78,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :current_user
+
   private
 
   def user_not_authorized(exception)
@@ -87,6 +89,10 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current_user = current_user
+  end
+
+  def current_user
+    @current_user
   end
 
   protected
