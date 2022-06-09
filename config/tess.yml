@@ -39,16 +39,16 @@ default: &default
     name: ''
     url: ''
   feature:
-    e-learnings: true
+    e-learnings: false
     events: true
     invitation: true
-    materials: true
+    materials: false
     nodes: true
-    collections: true
+    collections: false
     providers: true
     subscription: true
     registration: true
-    trainers: true
+    trainers: false
     workflows: true
     disabled: []
   placeholder:
