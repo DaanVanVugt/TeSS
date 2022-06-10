@@ -15,3 +15,4 @@ class UpdateDetailsOfMaterials < ActiveRecord::Migration[5.2]
     add_column :materials, :short_description , :string
   end
 end
+

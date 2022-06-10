@@ -13,3 +13,4 @@ class ChangeDetailsOnEvent < ActiveRecord::Migration[5.2]
                   using: "(string_to_array(cost_basis, ','))"
   end
 end
+

@@ -12,8 +12,9 @@ function initializeVocabTree() {
 }
 
 // check to see if value has already been selected
-function isDuplicateSelection(parent, value) {
+function isDuplicateSelection(parentName, value) {
     var result = false;
+    var parent = $(parentName);
     var children = parent.children();
     if (children && children.length > 0) {
         for (let i in children) {
@@ -32,15 +33,15 @@ function isDuplicateSelection(parent, value) {
 
 // add selected processing
 function addSelectedTreeItem(modelName, fieldName, dataValue, dataName) {
-    var parent = $(document.querySelector("." + fieldName));
-    if (isDuplicateSelection(parent, dataValue) === false) {
+    var parentName = "." + fieldName;
+    if (isDuplicateSelection(parentName, dataValue) === false) {
         var newItem = HandlebarsTemplates["dropdowns/item"]({
             field_name: fieldName,
             model_name: modelName,
             value: dataValue,
             name: dataName
         })
-        parent.append(newItem);
+        $(newItem).appendTo(parentName);
     }
 };
 
@@ -57,3 +58,4 @@ document.addEventListener("turbolinks:load", function () {
     })
 
 })
+

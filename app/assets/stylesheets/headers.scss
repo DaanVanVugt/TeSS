@@ -15,12 +15,9 @@
   .user-options {
     float: right;
 
-    &> a {
+    a {
       display: block;
       float: left;
-    }
-
-    a {
       padding: 0 10px;
       color: $top-header-text;
 
@@ -60,7 +57,6 @@
   .navbar {
     margin-bottom: 0;
   }
-
   .user-options {
     text-align: right;
     padding: 20px 0;
@@ -85,7 +81,6 @@
   @media (min-width: $screen-md) and (max-width: $screen-md-max) {
     input {
       width: 78px;
-    }
   }
 
   @media (min-width: $screen-lg) {
@@ -111,3 +106,4 @@
     }
   }
 }
+

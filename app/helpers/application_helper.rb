@@ -615,3 +615,4 @@ module ApplicationHelper
     PRIORITY_CURRENCIES
   end
 end
+

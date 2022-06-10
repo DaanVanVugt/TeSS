@@ -21,3 +21,4 @@ class AddDetailsToEvent < ActiveRecord::Migration[5.2]
     remove_column :events, :cost_basis, :string, array: true, default: []
   end
 end
+

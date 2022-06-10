@@ -6,6 +6,9 @@ class CollectionsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @collection = collections(:one)
+    #u = users(:regular_user)
+    #@collection.user_id = u.id
+    #@collection.save!
     @updated_collection = {
       title: 'New title',
       description: 'New description'

@@ -5,6 +5,7 @@ class CallbacksController < Devise::OmniauthCallbacksController
     define_method(provider) do
       handle_callback(provider, config)
     end
+
   end
 
   private

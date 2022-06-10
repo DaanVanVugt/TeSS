@@ -76,3 +76,4 @@ production:
 
 test:
   <<: *default
+

@@ -368,12 +368,12 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: #ffffff;
+  color: #fff;
   background-color: $contrast2;
 }
 
 .nav-item.active > a:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: $contrast;
 }
 
@@ -393,7 +393,7 @@ ul.unstyled {
 }
 
 .filter-button {
-  color: #ffffff;
+  color: #fff;
   background-color: $contrast2;
 
   &:hover {
@@ -487,7 +487,12 @@ ul.unstyled {
   content: "\e114"; /* adjust as needed, taken from bootstrap.css */
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   color: $contrast;
 }
 
@@ -571,7 +576,7 @@ accronym {
 }
 
 .keyword-pill {
-  color: #ffffff;
+  color: #fff;
   background-color: $contrast2;
   margin-bottom: 5px;
   display: inline-block;
@@ -613,7 +618,8 @@ ul.featureblocks {
   flex-wrap: wrap;
 
   li {
-    flex: 1;
+    float: left;
+    width: 20%;
     padding: 0 12px;
     border-right: 1px dotted #ccc;
     min-width: 120px;
@@ -646,6 +652,18 @@ ul.featureblocks {
     p {
       margin: 5px 0;
     }
+  }
+
+  li.pair {
+    width: 50%;
+  }
+
+  li.triple {
+    width: 33%;
+  }
+
+  li.quad {
+    width: 25%;
   }
 }
 
@@ -1098,9 +1116,10 @@ input[type=checkbox].field-lock + label:before,
 
 .list-card {
   @include floating-card;
+  width: 45%;
   margin: 0 10px 10px 0;
   position: relative;
-  display: block;
+  display: inline-block;
   padding: 10px 15px;
   background-color: white;
 
@@ -1118,7 +1137,7 @@ input[type=checkbox].field-lock + label:before,
   color: $state-info-text;
 }
 
-.omniauth-elixir_aai {
+.aai-login {
   width: 120px;
 }
 
