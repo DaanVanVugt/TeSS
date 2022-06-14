@@ -377,3 +377,9 @@ Once you have a local TeSS succesfully running, you may want to setup administra
 Find the user and assign them the administrative role. This can be completed by running this (where myemail@domain.co is the email address you used to register with):
 
     2.2.6 :001 > User.find_by_email('myemail@domain.co').update(role: Role.find_by_name('admin'))
+
+### Scraper documentation
+
+When running the scrapers a file ingestion.yml needs to exist with the structure as seen in ingestion.example.yml. A ContentProvider class object needs to exist in the db with the same name as the provider given in the sources list.  
+For manually running the scraper:
+    docker exec -it tess-app bash -c "rake tess:automated_ingestion"
