@@ -382,4 +382,5 @@ Find the user and assign them the administrative role. This can be completed by 
 
 When running the scrapers a file ingestion.yml needs to exist with the structure as seen in ingestion.example.yml. A ContentProvider class object needs to exist in the db with the same name as the provider given in the sources list.  
 For manually running the scraper:
-    docker exec -it tess-app bash -c "rake tess:automated_ingestion"
+
+    rake tess:automated_ingestion
