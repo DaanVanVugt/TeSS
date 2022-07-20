@@ -7,4 +7,12 @@ RailsAdmin.config do |config|
   end
 
   config.current_user_method(&:current_user)
+
+  config.model "Event" do
+    list do
+      field :event_types do
+        visible true
+      end
+    end
+  end
 end
