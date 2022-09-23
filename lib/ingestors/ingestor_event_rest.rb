@@ -533,6 +533,8 @@ module Ingestors
             event.start = dates[0].children.to_s.to_time
             if dates.length == 2
               event.end = dates[1].children.to_s.to_time
+            else
+              event.end = event.start.at_midday + 6.hours
             end
 
             data = event_data.css("div[id='nieuws_content_row']").css("div")[0].css("div")[0]
