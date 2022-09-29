@@ -168,11 +168,7 @@ class Event < ApplicationRecord
   end
 
   def expired?
-    if self.end
-      Time.now > self.end
-    else
-      false
-    end
+    Time.now > (self.end || start || 1.day.ago) # default to expired if no start time is given
   end
 
   def has_node?
