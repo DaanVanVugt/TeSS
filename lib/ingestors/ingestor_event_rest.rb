@@ -883,7 +883,7 @@ module Ingestors
           # dates
           event.title = event_data.css('h3.card__title').text
           event.timezone = 'Amsterdam'
-          event.start, event.end = parse_dates(event_data.css('.card__subtitle').text, event.timezone)
+          event.start, event.end = parse_dates(event_data.css('.card__subtitle').text)
 
           event.keywords = []
           event.description = convert_description event_data.css('.card__intro').inner_html
