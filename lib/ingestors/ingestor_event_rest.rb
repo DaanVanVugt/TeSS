@@ -1014,8 +1014,9 @@ module Ingestors
           event.description = convert_description ical_event.description
           event.url = ical_event.url
           # TeSS timezone handling is a bit special.
-          event.start = ical_event.dtstart
-          event.end = ical_event.dtend
+          # remove the timezone shift since else TeSS will shift it too much
+          event.start = ical_event.dtstart.to_s.split[0,2].join(' ').to_s_to_time
+          event.end = ical_event.dtend.to_s.split[0,2].join(' ').to_s_to_time
           event.venue = ical_event.try(:location)&.split(',')&.first
           event.city = 'Maastricht'
           event.event_types = "workshops_and_courses" #ical_event.categories # these event types are quite verbose and most are workshops
