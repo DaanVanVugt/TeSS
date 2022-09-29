@@ -826,10 +826,13 @@ module Ingestors
                 event.country = loc.last.strip
               when 'provider'
                 event.organizer = element.text
+              # ugly implementation so that TeSS does not shift timezone too much
               when 'startdate', 'courseDate'
-                event.start = element.text.to_s.to_time
+                event.start = element.text.to_s.split
+                event.start = event.start[0, event.start.length - 1].join(' ').to_s_to_time
               when 'enddate', 'courseEndDate'
-                event.end = element.text.to_s.to_time
+                event.end = element.text.to_s.split
+                event.end = event.end[0, event.end.length - 1].join(' ').to_s_to_time
               when 'latitude'
                 event.latitude = element.text
               when 'longitude'
