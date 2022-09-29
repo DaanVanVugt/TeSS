@@ -28,6 +28,11 @@ class ActiveSupport::TestCase
     redis = Redis.new
     redis.flushdb
   end
+
+  def teardown
+    User.current_user = nil
+  end
+
   # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
   # It must be included in each controller it is needed in or unit tests will break.
 
@@ -60,10 +65,8 @@ class ActiveSupport::TestCase
 
   # override Time.now for testing calendars, etc.
   def freeze_time(fixed_time=Time.now, &block)
-    Time.stub(:now, fixed_time) do
-      fixed_time.stub(:iso8601, fixed_time) do
-        block.call
-      end
+    Timecop.freeze(fixed_time) do
+      block.call
     end
   end
 

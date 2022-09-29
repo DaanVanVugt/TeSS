@@ -46,3 +46,76 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 7
+    provider: 'UvA'              # content provider's title
+    url: https://www.uva.nl/_restapi/list-json?uuid=def191e0-f85f-4ba0-b618-ee6d16f36db4&mount=13a4adcb-039a-4e99-b085-e9d91c8c7dc1     # the root URL required to access the source
+    image_url: https://www.dtls.nl/wp-content/uploads/2021/08/dtl-logo-1.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 8
+    provider: 'WUR'              # content provider's title
+    url: https://www.wur.nl/en/Resources-1/RSS/Calendar.htm
+    image_url: https://www.wur.nl/upload_mm/0/0/f/0135c3f5-b5b6-4fd4-a8da-47b5bea83e6b_WUR%20logo_642d7aa9_670x127.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 9
+    provider: 'UU'              # content provider's title
+    # dutch below
+    #url: 'https://www.uu.nl/events.rss?category-containers=4043,1916692,1916689,174593' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia'
+    url: 'https://www.uu.nl/events.rss?category-containers=4293,4295,4296,4301,2162490' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia', en library
+    # for english, use 4293,4295,4296,4301
+    # url: '
+    image_url: https://shape-project.org/part/uu_logo_en_cmyk.png/@@images/207be984-353c-4c0d-a8e4-333893e4086d.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 10
+    provider: 'NWO'              # content provider's title
+    # dutch below
+    url: https://www.nwo.nl/en/meetings
+    image_url: https://dmp.nwo.nl/assets/nwo/logo-7350782753e5f8a47e154a793b66c02dddb8693292a1c76d99bb2e70b42e807d.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 11
+    provider: 'EUR'              # content provider's title
+    url: 'https://eur-nl.libcal.com/ajax/calendar/list?c=-1&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    image_url: https://lcimages-eu.s3.amazonaws.com/data/headers/4011/EUR_Library_banner3_colour_resized_height.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 12
+    provider: 'OSCM'              # content provider's title
+    url: https://www.openscience-maastricht.nl/events/
+    image_url: https://www.openscience-maastricht.nl/wp-content/uploads/2020/06/Logo-OSCMaastricht_web.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 13
+    provider: 'Universiteit Leiden'              # content provider's title
+    url: https://www.library.universiteitleiden.nl/events
+    image_url: https://www.library.universiteitleiden.nl/ul2common/images/zegel.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 14
+    provider: 'University of Twente'              # content provider's title
+    url: https://www.utwente.nl/en/events/?categories=417878
+    # categories: festivals: 417884, ceremonial events: 417871, outside the UT: 417888, phd & orations: 417875,
+    # conferences: 417877, studium generale: 417879, study orientation: 417881, culture: 417835, 
+    # sports: 417837, alumni meetings: 417886, lectures: 417878
+    # found at https://www.utwente.nl/en/events/
+    # do a POST to this url with content-type application/json to get nicely formatted data
+    image_url: https://www.eduopinions.com/wp-content/uploads/2017/09/University-of-Twente-logo.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 15
+    provider: 'Maastricht University'              # content provider's title
+    url: 'https://library.maastrichtuniversity.nl/events/'
+    image_url: https://library.maastrichtuniversity.nl/wp-content/uploads/UM_Logo_OnlineLibrary2021_groot1.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true

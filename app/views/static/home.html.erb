@@ -2,12 +2,12 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "name": TeSS::Config.site['title_short'],
-  "alternateName": TeSS::Config.site['title'],
+  "name": "<%= TeSS::Config.site['title_short'] -%>",
+  "alternateName": "<%= TeSS::Config.site['title'] -%>",
   "url": "<%= root_url %>",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "<%= root_url %>search?utf8=%E2%9C%93&q={search_term_string}",
+    "target": "<%= search_url(q: 'QUERY').sub('QUERY', '{search_term_string}') -%>",
     "query-input": "required name=search_term_string"
   }
 }
@@ -17,14 +17,14 @@
 {
   "@context": "http://schema.org",
   "@type": "Organization",
-  "url": "<%= root_url %>",
-  "logo": "<%= image_url TeSS::Config.site['logo'] %>"
+  "url": "<%= root_url -%>",
+  "logo": "<%= image_url TeSS::Config.site['logo'] -%>"
 }
 </script>
 
 <%# Welcome text %>
 <div class="welcome-text">
-  <h2 class="module-heading" style="margin-top: 5px;"><%== raw t 'home.welcome' %></h2>
+  <h2 class="module-heading" style="margin-top: 5px;"><%== I18n.t('home.welcome', site: TeSS::Config.site['title_short']) %></h2>
   <p><%== raw t 'home.subtitle' %></p>
 </div>
 
@@ -58,7 +58,7 @@
   <% end %>
 </ul>
 
-<% if @resources.length > 0 -%>
+<% if (@resources.length > 0 && TeSS::Config.feature['latest_content'] == true)-%>
   <div id="materials-title">
     <h3>Latest Content in <%= TeSS::Config.site['title_short'] %></h3>
   </div>
