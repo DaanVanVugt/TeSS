@@ -132,6 +132,7 @@ module Ingestors
               event.timezone = item['start']['timezone']
               event.start = item['start']['local']
               event.end = item['end']['local']
+              event.set_default_times
               if event.expired?
                 records_expired += 1
               else
@@ -392,6 +393,7 @@ module Ingestors
           event.description = convert_description attr['description']
           event.start = attr['start']
           event.end = attr['end']
+          event.set_default_times
           event.timezone = 'UTC'
           event.contact = attr['contact']
           event.organizer = attr['organizer']
@@ -453,6 +455,7 @@ module Ingestors
           event.description = convert_description attr.fetch('description', '')
           event.start = attr.fetch('startdt', '')
           event.end = attr.fetch('enddt', '')
+          event.set_default_times
           event.venue = attr.fetch('location', '')
           if url.starts_with? 'https://vu-nl.libcal.com'
             event.city = 'Amsterdam'
@@ -520,6 +523,7 @@ module Ingestors
         event.description = convert_description attr.fetch('lead', '')
         event.start = attr.fetch('startDate', '')
         event.end = attr.fetch('endDate', '')
+        event.set_default_times
         event.venue = attr.fetch('locations', []).first&.fetch('title', '')
         event.city = 'Amsterdam'
         event.country = 'The Netherlands'
@@ -562,6 +566,7 @@ module Ingestors
             event.description = convert_description attr['description']
             event.start = attr['startDate']
             event.end = attr['endDate']
+            event.set_default_times
             event.venue = if attr['location'].is_a?(Array)
                             attr['location'].join(' - ')
                           else
@@ -601,6 +606,7 @@ module Ingestors
           # TeSS timezone handling is a bit special.
           event.start = ical_event.dtstart
           event.end = ical_event.dtend
+          event.set_default_times
           event.venue = ical_event.try(:venue)
           event.event_types = ical_event.categories # fair-coffee pre-registration-workshop fair-essentials-workshop fair-for-qualitative-data reproducibilitea
           # see https://www.openscience-maastricht.nl/wp-sitemap-taxonomies-event-categories-1.xml 
@@ -633,6 +639,7 @@ module Ingestors
           dates = event_data.css("div[id='nieuws_image_date_row']").css('p').css('span')
           event.start = dates[0].children.to_s.to_time
           event.end = dates[1].children.to_s.to_time if dates.length == 2
+          event.set_default_times
 
           data = event_data.css("div[id='nieuws_content_row']").css('div')[0].css('div')[0]
           event.title = data.css("div[id='agenda_titel']").css('h3')[0].children
@@ -706,7 +713,7 @@ module Ingestors
               end
             end
           end
-          event.end = event.start if event.end.nil?
+          event.set_default_times
           event.source = 'DTL'
           event.timezone = 'Amsterdam'
           add_event(event)
@@ -769,7 +776,7 @@ module Ingestors
           sleep 1
         end
 
-        event.end = event.start if event.end.nil?
+        event.set_default_times
         event.source = 'WUR'
         event.timezone = 'Amsterdam'
 
@@ -852,7 +859,7 @@ module Ingestors
             sleep 1
           end
 
-          event.end = event.start if event.end.nil?
+          event.set_default_times
           event.source = 'WUR'
           event.timezone = 'Amsterdam'
 
@@ -884,6 +891,7 @@ module Ingestors
           event.title = event_data.css('h3.card__title').text
           event.timezone = 'Amsterdam'
           event.start, event.end = parse_dates(event_data.css('.card__subtitle').text)
+          event.set_default_times
 
           event.keywords = []
           event.description = convert_description event_data.css('.card__intro').inner_html
@@ -945,6 +953,7 @@ module Ingestors
               end
             end
           end
+          event.set_default_times
 
           event.keywords = []
           event.description = convert_description event_data.css('#content .indent').inner_html
@@ -983,6 +992,7 @@ module Ingestors
         event.title = item['title']
         event.url = item['link']
         event.start, event.end = parse_dates(item['dateformatted'])
+        event.set_default_times
         event.venue = item['location']
 
         event.keywords = item['tags'].map{ |t| t['tag'] }
@@ -1016,6 +1026,7 @@ module Ingestors
           # TeSS timezone handling is a bit special.
           event.start = ical_event.dtstart
           event.end = ical_event.dtend
+          event.set_default_times
           event.venue = ical_event.try(:location)&.split(',')&.first
           event.city = 'Maastricht'
           event.event_types = "workshops_and_courses" #ical_event.categories # these event types are quite verbose and most are workshops
