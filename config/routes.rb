@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   concern :collaboratable do
-    resources :collaborations, only: [:create, :destroy, :index, :show]
+    resources :collaborations, only: %i[create destroy index show]
   end
 
   concern :activities do
@@ -11,11 +11,7 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows
-  end
-
-  #get 'static/home'
+  # get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
   get 'about/developers' => 'about#developers', as: 'developers'
@@ -28,18 +24,18 @@ Rails.application.routes.draw do
   post 'content_providers/check_exists' => 'content_providers#check_exists'
   post 'sources/check_exists' => 'sources#check_exists'
 
-  #devise_for :users
+  # devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
   # Devise will try to connect to the DB at initialization, which we don't want
   # to happen when precompiling assets in the docker build script.
   unless Rake.try(:application)&.top_level_tasks&.include? 'assets:precompile'
-    devise_for :users, :controllers => {
-      :registrations => 'tess_devise/registrations',
-      :invitations => 'tess_devise/invitations',
-      :omniauth_callbacks => 'callbacks'
+    devise_for :users, controllers: {
+      registrations: 'tess_devise/registrations',
+      invitations: 'tess_devise/invitations',
+      omniauth_callbacks: 'callbacks'
     }
   end
-  #Redirect to users index page after devise user account update
+  # Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
   # end
@@ -53,89 +49,69 @@ Rails.application.routes.draw do
   get 'static/home'
 
   resources :users do
-    resource :ban, only: [:create, :new, :destroy]
+    resource :ban, only: %i[create new destroy]
   end
 
   resources :sources, concerns: :activities
 
-  if TeSS::Config.feature['trainers'] == true
-    resources :trainers, only: [:show, :index]
+  resources :trainers, only: %i[show index]
+
+  resources :nodes, concerns: :activities
+
+  resources :events, concerns: :activities do
+    collection do
+      get 'count'
+    end
+    member do
+      get 'redirect'
+      post 'add_term'
+      post 'add_data'
+      post 'reject_term'
+      post 'reject_data'
+      get 'report'
+      patch 'report', to: 'events#update_report'
+      get 'clone', to: 'events#clone'
+    end
   end
 
-  if TeSS::Config.feature['nodes'] == true
-    resources :nodes, concerns: :activities
-  end
-
-  if TeSS::Config.feature['events'] == true
-    resources :events, concerns: :activities do
-      collection do
-        get 'count'
-      end
-      member do
-        get 'redirect'
-        post 'add_term'
-        post 'add_data'
-        post 'reject_term'
-        post 'reject_data'
-        get 'report'
-        patch 'report', to: 'events#update_report'
-        get 'clone', to: 'events#clone'
+  resources :collections, concerns: %i[collaboratable activities] do
+    # in the future it could be considered to expand this to multiple collections
+    # at the same view, in a kind of matrix-view, useful for people who manage several
+    # collections.
+    member do
+      %w[events materials].each do |item|
+        get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
+        patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify }
       end
     end
   end
 
-  if TeSS::Config.feature['collections'] == true
-    resources :collections, concerns: %i[collaboratable activities] do
-      # in the future it could be considered to expand this to multiple collections
-      # at the same view, in a kind of matrix-view, useful for people who manage several
-      # collections.
-      member do
-        %w[events materials].each do |item|
-          return unless TeSS::Config.feature[item]
-
-          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
-          patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify}
-        end
-      end
+  resources :workflows, concerns: %i[collaboratable activities] do
+    member do
+      get 'fork'
+      get 'embed'
     end
   end
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows, concerns: %i[collaboratable activities] do
-      member do
-        get 'fork'
-        get 'embed'
-      end
+  resources :content_providers, concerns: :activities
+
+  resources :materials, concerns: :activities do
+    member do
+      post :reject_term
+      post :reject_data
+      post :add_term
+      post :add_data
+    end
+    collection do
+      get 'count'
     end
   end
 
-  if TeSS::Config.feature['providers'] == true
-    resources :content_providers, concerns: :activities
-  end
+  get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 
-  if TeSS::Config.feature['materials'] == true
-    resources :materials, concerns: :activities do
-      member do
-        post :reject_term
-        post :reject_data
-        post :add_term
-        post :add_data
-      end
-      collection do
-        get 'count'
-      end
-    end
-  end
+  get 'invitees' => 'users#invitees'
 
-  if TeSS::Config.feature['e-learnings'] == true
-    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
-  end
-
-  if TeSS::Config.feature['invitation'] == true
-    get 'invitees' => 'users#invitees'
-  end
-
-  resources :subscriptions, only: [:show, :index, :create, :destroy] do
+  resources :subscriptions, only: %i[show index create destroy] do
     member do
       get 'unsubscribe'
     end
@@ -152,8 +128,8 @@ Rails.application.routes.draw do
   get 'test_url' => 'application#test_url'
 
   # error pages
-  %w( 404 422 500 503 ).each do |code|
-    get code, :to => "application#handle_error", :status_code => code
+  %w[404 422 500 503].each do |code|
+    get code, to: 'application#handle_error', status_code: code
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
@@ -161,11 +137,11 @@ Rails.application.routes.draw do
   get 'curate' => 'curator#index'
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.is_admin? } do
+  authenticate :user, ->(u) { u.is_admin? } do
     mount Sidekiq::Web, at: '/sidekiq'
   end
 
-  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
+  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+:)?/, type: /[a-zA-Z]/, id: /\d+/ }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
