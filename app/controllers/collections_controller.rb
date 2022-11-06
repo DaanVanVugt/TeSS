@@ -35,7 +35,7 @@ class CollectionsController < ApplicationController
     @item_class = item_class
     feature_enabled?(@item_class.name.pluralize)
     @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
-    @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
+    @items = @item_class.from_verified_users.where('created_at >= ?', @since).order('created_at ASC')
   end
 
   # PATCH/PUT /collections/1/curate_#{type}
@@ -52,7 +52,7 @@ class CollectionsController < ApplicationController
         format.json { render :show, status: :ok, location: @collection }
       else
         @since = @item_class.find(params[:reviewed_item_ids].last).created_at
-        @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
+        @items = @item_class.from_verified_users.where('created_at >= ?', @since).order('created_at ASC')
         format.html { render :curate }
         format.json { render json: @collection.errors, status: :unprocessable_entity }
       end
