@@ -37,7 +37,7 @@ class CollectionsController < ApplicationController
 
     # the default date range is given by the highest created_at date of the collection
     @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
-    @items = @item_class.from_verified_users.where('created_at >= ?', @since).order('created_at ASC')
+    @items = @item_class.from_verified_users.where(@item_class.table_name => { created_at: @since.. }).order('created_at ASC')
   end
 
   # PATCH/PUT /collections/1/curate_#{type}
