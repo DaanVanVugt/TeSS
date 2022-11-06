@@ -31,9 +31,11 @@ class CollectionsController < ApplicationController
   def curate
     authorize @collection
 
-    # the default date range is given by the highest created_at date of the collection
+    feature_enabled?('collection-curation')
     @item_class = item_class
     feature_enabled?(@item_class.name.pluralize)
+
+    # the default date range is given by the highest created_at date of the collection
     @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
     @items = @item_class.from_verified_users.where('created_at >= ?', @since).order('created_at ASC')
   end
@@ -42,6 +44,8 @@ class CollectionsController < ApplicationController
   def update_curation
     # We need a separate method since we only also need to remove deselected items.
     authorize @collection
+    feature_enabled?('collection-curation')
+
     @item_class = item_class
     feature_enabled?(@item_class.name.pluralize)
 

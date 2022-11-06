@@ -42,6 +42,7 @@ default: &default
     materials: true
     nodes: false
     collections: true
+    collection_curation: true
     providers: true
     subscription: true
     registration: true
