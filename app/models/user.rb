@@ -1,11 +1,11 @@
 class User < ApplicationRecord
 
-  include ActionView::Helpers
   include PublicActivity::Common
 
   acts_as_token_authenticatable
   include Gravtastic
   gravtastic :secure => true, :size => 250
+  has_image(placeholder: TeSS::Config.placeholder['person'])
 
   extend FriendlyId
   friendly_id :username, use: :slugged
@@ -77,7 +77,7 @@ class User < ApplicationRecord
   attr_accessor :publicize_email
 
   # --- scopes
-  scope :non_default, -> { where.not(id: User.get_default_user.id) }
+  scope :non_default, -> { where.not(role_id: Role.fetch('default_user').id) }
 
   scope :invited, -> { where.not(invitation_token: nil) }
 
@@ -117,13 +117,7 @@ class User < ApplicationRecord
 
   # Check if user is owner of a resource
   def is_owner?(resource)
-    return false if resource.nil?
-    return false if !resource.respond_to?("user".to_sym)
-    if self == resource.user
-      return true
-    else
-      return false
-    end
+    resource&.respond_to?(:user) && resource.user == self
   end
 
   def is_curator?
@@ -311,6 +305,15 @@ class User < ApplicationRecord
     has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
   end
 
+  # Override the gravatar URL to first check for a locally uploaded image
+  def avatar_url(image_params={}, gravatar_params={})
+    if image.present?
+      image.url(**image_params)
+    else
+      gravatar_url(**gravatar_params)
+    end
+  end
+
   private
 
   def reassign_owner
@@ -354,5 +357,4 @@ class User < ApplicationRecord
       self.username = self.email
     end
   end
-
 end

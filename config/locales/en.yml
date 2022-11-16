@@ -332,7 +332,7 @@ en:
       targets: 'Indicate the type of audience intended to use your training material.'
       time: 'What is the estimated time it takes to work through this resource in hours?'
       title: 'Add a title for your training material.'
-      type: 'Select the type of resource that best matches the training material. '
+      resource_type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
   profile:
@@ -343,7 +343,7 @@ en:
     trainer:
       gravitar:
         help: >
-          The image displayed with your profile is the Gravatar image associated with the provided contact email address.
+          The image displayed with your profile is the Gravatar image associated with the provided contact email address, unless you upload another image above.
           Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
           platforms. To set-up a linked avatar, go to the Gravatar site:
         url: https://en.gravatar.com
