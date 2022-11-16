@@ -4,7 +4,7 @@
     <div class="page-header row">
       <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title), class: 'col-md-8') %>
       <div class="col-md-4" style="margin-top: 25px;">
-        <%= label_tag :since, t('.new_items_since', default: ['%{count} new items since'], count: @items.length) %>
+        <%= label_tag :since, t('.new_items_since', default: ['%{count} items since'], count: @items.length) %>
         <input id="since" type="date" value="<%= @since.strftime('%Y-%m-%d') %>" pattern="\d{4}-\d{2}-\d{2}" onchange="window.location.search='?since='+this.value;" />
       </div>
     </div>
