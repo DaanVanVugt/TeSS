@@ -46,6 +46,7 @@ test:
     materials: true
     nodes: true
     collections: true
+    collection_curation: true
     providers: true
     registration: true
     subscription: true

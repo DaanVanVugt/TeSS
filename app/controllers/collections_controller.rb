@@ -1,15 +1,14 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_collection, only: [:show, :edit, :update, :destroy]
+  before_action :set_collection, only: %i[show edit curate update_curation add_item remove_item update destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
 
   # GET /collections
   # GET /collections.json
-  def index
-  end
+  def index; end
 
   # GET /collections/1
   # GET /collections/1.json
@@ -26,6 +25,42 @@ class CollectionsController < ApplicationController
   # GET /collections/1/edit
   def edit
     authorize @collection
+  end
+
+  # GET /collections/1/curate_#{type}?since=#{DateTime}
+  def curate
+    authorize @collection
+
+    feature_enabled?('collection-curation')
+    @item_class = item_class
+    feature_enabled?(@item_class.name.pluralize)
+
+    # the default date range is given by the highest created_at date of the collection
+    @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at)&.beginning_of_day || Time.at(0)
+    @items = @item_class.from_verified_users.where(@item_class.table_name => { created_at: @since.. }).order('created_at ASC')
+  end
+
+  # PATCH/PUT /collections/1/curate_#{type}
+  def update_curation
+    # We need a separate method since we only also need to remove deselected items.
+    authorize @collection
+    feature_enabled?('collection-curation')
+
+    @item_class = item_class
+    feature_enabled?(@item_class.name.pluralize)
+
+    respond_to do |format|
+      if update_collection_items!
+        @collection.create_activity(:update, owner: current_user) if @collection.log_update_activity?
+        format.html { redirect_to @collection, notice: 'Collection was successfully updated.' }
+        format.json { render :show, status: :ok, location: @collection }
+      else
+        @since = @item_class.find(params[:reviewed_item_ids].last).created_at
+        @items = @item_class.from_verified_users.where('created_at >= ?', @since).order('created_at ASC')
+        format.html { render :curate }
+        format.json { render json: @collection.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /collections
@@ -85,6 +120,48 @@ class CollectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
-    params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
+    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords: [] }, { material_ids: [] }, { event_ids: [] })
+  end
+
+  # once associations are properly set up to use polymorphic items
+  # these can be removed.
+  def item_class
+    case params[:type]
+    when 'Event'
+      return Event if TeSS::Config.feature['events']
+    when 'Material'
+      return Material if TeSS::Config.feature['materials']
+    end
+
+    raise ActiveRecord::AccessDenied
+  end
+
+  def collection_item_class
+    case params[:type]
+    when 'Event'
+      return CollectionEvent if TeSS::Config.feature['events']
+    when 'Material'
+      return CollectionMaterial if TeSS::Config.feature['materials']
+    end
+
+    raise Pundit::NotAuthorizedError
+  end
+
+  # since we have not checked all items we have to do a little work
+  # to add and remove only those that were checked now.
+  def update_collection_items!
+    selected_ids = Set.new(params[:item_ids]&.map(&:to_i))
+    unselected_ids = Set.new(params[:reviewed_item_ids]&.map(&:to_i)) - selected_ids
+    fk_name = "#{item_class.name.downcase}_id"
+
+    # remove unselected ones, if any exist
+    # one query per item, due to callbacks.
+    collection_item_class.where(collection_id: @collection.id, fk_name => unselected_ids).destroy_all
+
+    # find out which ones to add
+    existing = Set.new(collection_item_class.where(collection_id: @collection.id, fk_name => selected_ids).pluck(fk_name))
+    to_add = selected_ids - existing
+    collection_item_class.create!(to_add.map { |id| { fk_name => id, collection_id: @collection.id } })
+    # the after_save callback will probably still add a bunch of activities, so we can't avoid individual queries just yet.
   end
 end
