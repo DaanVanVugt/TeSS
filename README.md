@@ -96,3 +96,9 @@ Structure the JSON thus:
             "doi": "Put some stuff in here"
         }
     }
+### Scraper documentation
+
+When running the scrapers a file ingestion.yml needs to exist with the structure as seen in ingestion.example.yml. A ContentProvider class object needs to exist in the db with the same name as the provider given in the sources list.  
+For manually running the scraper:
+
+    rake tess:automated_ingestion

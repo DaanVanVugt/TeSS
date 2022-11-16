@@ -37,3 +37,6 @@ docker-volumes
 shared
 vendor/bundle
 config/ontologies/*.cache
+
+TeSS.code-workspace
+.DS_store

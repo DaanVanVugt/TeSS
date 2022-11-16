@@ -11,7 +11,7 @@
       <!-- REGISTERING CONTENT IN TESS -->
       <div class="row">
         <div id='how' class="h3">Registering Resources in <%= TeSS::Config.site['title_short'] %></div>
-        <%= raw t 'register.resources' %>
+        <%= I18n.t('register.resources', site: TeSS::Config.site['title_short']) %>
 
         <div class="row">
           <div class="col-md-3 motivation_box">
@@ -50,7 +50,7 @@
             <div class="include-where-text">Be seen in search results more owing to our search-engine optimisation</div>
           </div>
         </div>
-        <%== raw t 'register.methods' %>
+        <%== I18n.t('register.methods', site: TeSS::Config.site['title_short']) %>
       </div>
 
       <!-- AUTOMATIC REGISTRATION -->
@@ -120,7 +120,7 @@
       <div class="row">
         <div class="even-about-block">
           <div id='manual' class="h4">Manual Registration</div>
-          <%== raw t 'register.manual' %>
+          <%== I18n.t('register.manual', site: TeSS::Config.site['title_short']) %>
           <p>
             <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
               <i class="fa fa-plus-square"></i> Register event

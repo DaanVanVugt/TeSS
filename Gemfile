@@ -2,7 +2,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0'
+gem 'rails', '6.1.6.1'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -57,11 +57,16 @@ gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
-gem 'sidekiq', '~> 6.4.0'
+gem 'sidekiq'
 gem 'slim'
+
+# Sentry
+gem 'sentry-rails'
+gem 'sentry-ruby'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'jquery-qtip2-wrapper-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -122,7 +127,7 @@ gem 'linkeddata'
 
 # Used for lat/lon rake task
 gem 'geocoder'
-gem 'redis', '< 5.0.0'
+gem 'redis', '< 4.8.0'
 
 # set serializers version
 gem 'active_model_serializers', '~> 0.10.13'
@@ -190,3 +195,5 @@ group :test do
   gem 'minitest', '5.14.4'
   gem 'rails-controller-testing'
 end
+
+gem "timecop", "~> 0.9.5"
