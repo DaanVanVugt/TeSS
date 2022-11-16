@@ -14,7 +14,7 @@
           <tr>
             <th></th>
             <%- item_fields(@item_class).each do |field| -%>
-              <th><%= t field, default: field %></th>
+              <th><%= t field, default: field.humanize %></th>
             <%- end %>
             <th></th>
           </tr>
