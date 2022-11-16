@@ -58,14 +58,14 @@ module Ingestors
     # returns start, end
     #
     # EXAMPLES:
-    # Thursday 22 september 2022 till saturday 24 september 2022 
+    # Thursday 22 september 2022 till saturday 24 september 2022
     # 3-7 october 2022
     # 21 and 22 september 2022
     # tuesday 20 september 2022
     # thursday, 15 september 2022, 15:00 - 16:00 CEST (13:00 - 14:00 UTC)
     # thursday 8 september, 13:00 - 17:00
     # 6 october 2022 | 9:00-12:00 GMT-3/13:00-16:00 CEST | online
-    # 10 october 2022 till 11 october 2022 
+    # 10 october 2022 till 11 october 2022
     # 2-3 november 2022 | online
     # donderdag 17 november 2022, location
     # 5-6 december 2022 - location
@@ -74,10 +74,11 @@ module Ingestors
     # here we have looked at something like https://github.com/adzap/timeliness
     # or https://github.com/mojombo/chronic
     # but without great success.
-    def parse_dates(input, timezone=nil)
+    def parse_dates(input, timezone = nil)
       Time.use_zone(timezone) do
-        # try to split on 'till', 'and' and '-'
-        parts = input.gsub(/\(.*\)/, '').split(/and|till|-/)
+        # try to split on obvious interval markers
+        parts = input.gsub(/\(.*\)/, '').split(/and |till |-|to |tot /) # the whitespace is important (to is in October)
+        # splitting on - yields too many parts to do a proper parsing, so we fall through
         if parts.length > 1
           start = endt = nil
 
@@ -118,11 +119,11 @@ module Ingestors
       end
     end
 
-    def parse_start_date(input, timezone=nil)
+    def parse_start_date(input, timezone = nil)
       parse_dates(input, timezone).first
     end
 
-    def parse_end_date(input, timezone=nil)
+    def parse_end_date(input, timezone = nil)
       parse_dates(input, timezone).last
     end
 

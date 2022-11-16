@@ -752,9 +752,9 @@ module Ingestors
             when 'provider'
               event.organizer = element.text
             when 'startdate', 'courseDate'
-              event.start = element.text.to_s.to_time
+              event.start = element.text.to_s
             when 'enddate', 'courseEndDate'
-              event.end = element.text.to_s.to_time
+              event.end = element.text.to_s
             when 'latitude'
               event.latitude = element.text
             when 'longitude'
@@ -770,7 +770,7 @@ module Ingestors
         unless event.start and !event.url.starts_with('https://')
           # should we do more against data exfiltration? URI.open is a known hazard
           page = Nokogiri::XML(URI.open(event.url))
-          event.start = page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip&.to_time
+          event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
           sleep 1
