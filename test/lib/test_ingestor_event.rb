@@ -19,6 +19,10 @@ class TestIngestorEvent < ActiveSupport::TestCase
         Time.zone.parse('2022-9-8 13:00').to_datetime,
         Time.zone.parse('2022-9-8 17:00').to_datetime
       ],
+      'Tuesday 17 January 2023 10:00 - 12:30 hour ': [
+        Time.zone.parse('2023-1-17 10:00').to_datetime,
+        Time.zone.parse('2023-1-17 12:30').to_datetime
+      ],
       # this one is bonkers, no way to parse nicely. ignore
       # '6 october 2022 | 9:00-12:00 GMT-3/13:00-16:00 CEST | online': [
       # Time.zone.parse('2022-10-6 13:00').to_datetime,

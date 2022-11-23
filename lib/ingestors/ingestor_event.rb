@@ -75,9 +75,11 @@ module Ingestors
     # or https://github.com/mojombo/chronic
     # but without great success.
     def parse_dates(input, timezone = nil)
+      puts("date parsing for: #{input}")
       Time.use_zone(timezone) do
         # try to split on obvious interval markers
-        parts = input.gsub(/\(.*\)/, '').split(/and |till |-|to |tot /) # the whitespace is important (to is in October)
+        parts = input.gsub(/\(.*\)/, '').split(/and |till |-|—|–|to |tot /) # the whitespace is important (to is in October)
+        # em-dash, en-dash, hyphen
         # splitting on - yields too many parts to do a proper parsing, so we fall through
         if parts.length > 1
           start = endt = nil
