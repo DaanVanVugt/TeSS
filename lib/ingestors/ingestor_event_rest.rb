@@ -642,7 +642,7 @@ module Ingestors
           event.set_default_times
 
           data = event_data.css("div[id='nieuws_content_row']").css('div')[0].css('div')[0]
-          event.title = convert_title data.css("div[id='agenda_titel']").css('h3')[0].children
+          event.title = convert_title data.css("div[id='agenda_titel']").css('h3')[0].children.to_s
 
           event.keywords = []
           data.css("div[id='cat_nieuws_item']").css('p').css('span').each do |key|
