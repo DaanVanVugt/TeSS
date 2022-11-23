@@ -12,6 +12,8 @@ module Ingestors
       @token = ''
     end
 
+    require 'cgi'
+
     # accessor methods
     attr_reader :messages
     attr_reader :ingested
@@ -32,8 +34,14 @@ module Ingestors
 
     def convert_description (input)
       return input if input.nil?
+      input = CGI.unescapeHTML(input)
       return input if input == ActionController::Base.helpers.strip_tags(input)
       return ReverseMarkdown.convert(input, tag_border: '').strip
+    end
+
+    def convert_title(input)
+      return input if input.nil?
+      CGI.unescapeHTML(input)
     end
 
     def process_url(row, header)

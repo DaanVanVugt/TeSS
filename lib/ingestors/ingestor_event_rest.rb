@@ -561,7 +561,7 @@ module Ingestors
 
             # extract event details from
             attr = data['@graph'].first
-            event.title = attr['name']
+            event.title = convert_title attr['name']
             event.url = attr['url']&.strip
             event.description = convert_description attr['description']
             event.start = attr['startDate']
@@ -642,7 +642,7 @@ module Ingestors
           event.set_default_times
 
           data = event_data.css("div[id='nieuws_content_row']").css('div')[0].css('div')[0]
-          event.title = data.css("div[id='agenda_titel']").css('h3')[0].children
+          event.title = convert_title data.css("div[id='agenda_titel']").css('h3')[0].children.to_s
 
           event.keywords = []
           data.css("div[id='cat_nieuws_item']").css('p').css('span').each do |key|
@@ -680,7 +680,7 @@ module Ingestors
             event_item.element_children.each do |element|
               case element.name
               when 'title'
-                event.title = element.text
+                event.title = convert_title element.text
               when 'link'
                 # Use GUID field as probably more stable
                 # event.url = element.text
@@ -891,7 +891,7 @@ module Ingestors
           event = Event.new
 
           # dates
-          event.title = event_data.css('h3.card__title').text
+          event.title = convert_title event_data.css('h3.card__title').text
           event.timezone = 'Amsterdam'
           event.start, event.end = parse_dates(event_data.css('.card__subtitle').text)
           event.set_default_times
@@ -925,7 +925,7 @@ module Ingestors
           event = Event.new
 
           # dates
-          event.title = event_data.css('#content h1').text
+          event.title = convert_title event_data.css('#content h1').text
           event.timezone = 'Europe/Amsterdam'
           properties = event_data.css('dl.facts > dt')
           values = event_data.css('dl.facts > dd')
