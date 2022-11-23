@@ -836,10 +836,10 @@ module Ingestors
               # ugly implementation so that TeSS does not shift timezone too much
               when 'startdate', 'courseDate'
                 event.start = element.text.to_s.split
-                event.start = event.start[0, event.start.length - 1].join(' ').to_s_to_time
+                event.start = event.start[0, event.start.length - 1].join(' ').to_time
               when 'enddate', 'courseEndDate'
                 event.end = element.text.to_s.split
-                event.end = event.end[0, event.end.length - 1].join(' ').to_s_to_time
+                event.end = event.end[0, event.end.length - 1].join(' ').to_time
               when 'latitude'
                 event.latitude = element.text
               when 'longitude'
@@ -929,6 +929,7 @@ module Ingestors
           event.timezone = 'Europe/Amsterdam'
           properties = event_data.css('dl.facts > dt')
           values = event_data.css('dl.facts > dd')
+          date = '' # have a global variable here since it is reused in scanning the properties block
           properties.zip(values) do |property, value|
             case property.text.strip
             when 'Date'
@@ -1028,8 +1029,8 @@ module Ingestors
           event.url = ical_event.url
           # TeSS timezone handling is a bit special.
           # remove the timezone shift since else TeSS will shift it too much
-          event.start = ical_event.dtstart.to_s.split[0,2].join(' ').to_s_to_time
-          event.end = ical_event.dtend.to_s.split[0,2].join(' ').to_s_to_time
+          event.start = ical_event.dtstart.to_s.split[0,2].join(' ').to_time
+          event.end = ical_event.dtend.to_s.split[0,2].join(' ').to_time
           event.set_default_times
           event.venue = ical_event.try(:location)&.split(',')&.first
           event.city = 'Maastricht'
