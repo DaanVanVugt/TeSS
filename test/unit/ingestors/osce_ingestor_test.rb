@@ -9,7 +9,7 @@ class OsceIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from osce' do
     source = @content_provider.sources.build(
-      url: 'https://test',
+      url: 'https://sites.google.com/view/osceindhoven/news-and-events',
       method: 'osce',
       enabled: true
     )
@@ -17,12 +17,12 @@ class OsceIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::OsceIngestor.new
 
     # check event doesn't
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
-    new_url = 'test'
+    new_title = "4TU FAIR Data Day at TU/e"
+    new_url = 'https://sites.google.com/view/osceindhoven/news-and-events/4TU-FAIR-Data-Day-at-TUe'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 6 do
+    assert_difference 'Event.count', 7 do
       freeze_time(Time.new(2019)) do
         VCR.use_cassette("ingestors/osce") do
           ingestor.read(source.url)
@@ -31,9 +31,9 @@ class OsceIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 6, ingestor.events.count
+    assert_equal 7, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 6, ingestor.stats[:events][:added]
+    assert_equal 7, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -46,9 +46,8 @@ class OsceIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'OSCE', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Mon, 08 May 2023 20:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Mon, 08 May 2023 21:30:00.000000000 UTC +00:00'.to_time, event.end
-    assert_equal 'Academy Building, Broerstraat 5, Groningen', event.location
-    assert_nil event.end
+    assert_equal 'Thu, 04 Apr 2019 12:45:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Thu, 04 Apr 2019 15:30:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'TU/e campus, Luna 1.240', event.venue
   end
 end
