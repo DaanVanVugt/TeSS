@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ConfigTest < ActiveSupport::TestCase
-
   test 'should load test secrets' do
     assert_equal 'test', Rails.application.secrets.oidc[:client_id]
   end
@@ -20,4 +19,12 @@ class ConfigTest < ActiveSupport::TestCase
     assert_equal 'TTI', TeSS::Config.site['title_short']
   end
 
+  test 'redis URL should be set' do
+    exp = if ENV['REDIS_TEST_URL'].present? # Used in CI
+            ENV['REDIS_TEST_URL']
+          else
+            'redis://localhost:6379/0'
+          end
+    assert_equal exp, TeSS::Config.redis_url
+  end
 end
