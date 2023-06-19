@@ -1,39 +1,39 @@
 require 'test_helper'
 
-class OsceIngestorTest < ActiveSupport::TestCase
+class OscrIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
   end
 
-  test 'can ingest events from osce' do
+  test 'can ingest events from oscr' do
     source = @content_provider.sources.build(
-      url: 'https://sites.google.com/view/osceindhoven/news-and-events',
-      method: 'osce',
+      url: 'https://www.openscience-rotterdam.com/tags/#workshops-list',
+      method: 'oscr',
       enabled: true
     )
 
-    ingestor = Ingestors::OsceIngestor.new
+    ingestor = Ingestors::OscrIngestor.new
 
     # check event doesn't
-    new_title = "4TU FAIR Data Day at TU/e"
-    new_url = 'https://sites.google.com/view/osceindhoven/news-and-events/4TU-FAIR-Data-Day-at-TUe'
+    new_title = "A Tour around the Tidyverse World"
+    new_url = 'https://www.openscience-rotterdam.com/2020/06/15/intro-tidyverse-june2020/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 7 do
       freeze_time(Time.new(2019)) do
-        VCR.use_cassette("ingestors/osce") do
+        VCR.use_cassette("ingestors/oscr") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
       end
     end
 
-    assert_equal 7, ingestor.events.count
+    assert_equal 13, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 7, ingestor.stats[:events][:added]
+    assert_equal 13, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -44,10 +44,11 @@ class OsceIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'OSCE', event.source
+    assert_equal 'OSCR', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Thu, 04 Apr 2019 12:45:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Thu, 04 Apr 2019 15:30:00.000000000 UTC +00:00'.to_time, event.end
-    assert_equal 'TU/e campus, Luna 1.240', event.venue
+    assert_equal 'Thu, 24 Jun 2020 14:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Thu, 24 Jun 2020 15:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Zoom', event.venue
+    assert_equal true, event.online
   end
 end
