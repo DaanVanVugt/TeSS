@@ -33,24 +33,31 @@ module Ingestors
       workshop_url_list = []
       event_page = Nokogiri::HTML5.parse(open_url(oscr_url.to_s, raise: true)).css("div[id='workshops-list']").first.css("li[class='archive-post']")
       event_page.each do |event_section|
-        el = event_section.css("a[class='archive-post-title]").first
+        el = event_section.css("a[class='archive-post-title']").first
         workshop_title_list.append(el.text)
         workshop_title_list.append(el.get_attribute('href'))
       end
 
+      puts 0
+      byebug
       event_page = Nokogiri::HTML5.parse(open_url(github_url.to_s, raise: true)).css("tbody").first.css("tr[class='react-directory-row']")
       event_page.each do |event_section|
+        puts 1
         new_url = event_section.css("a[class='Link--primary']").first.get_attribute('href') + '/index.Rmd'
+        puts 2
         unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/oscr.yml')
           sleep(0.5)
         end
         github_text = Nokogiri::HTML5.parse(open_url(new_url.to_s, raise: true)).css("textarea[id='read-only-cursor-text-area]").first.text
+        puts 3
         _, vars_text , description = github_text.split('---\n')
+        puts 4
         dict = {}
         vars_text.split('\n').each do |txt|
           a, b = txt.split(':')
           dict[a.strip] = b.strip
         end
+        puts 5
         if dict['title'] in workshop_title_list
           event = OpenStruct.new
           event.title = dict['title']
