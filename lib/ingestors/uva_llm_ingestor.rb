@@ -2,7 +2,7 @@ require 'open-uri'
 require 'csv'
 
 module Ingestors
-  class UvaLLmIngestor < LlmIngestor
+  class UvaLlmIngestor < LlmIngestor
     def self.config
       {
         key: 'uva_llm_event',
