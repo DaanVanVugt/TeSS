@@ -4,29 +4,18 @@ require 'nokogiri'
 require 'active_support/core_ext/hash'
 
 module Ingestors
-  class SurfIngestor < LlmIngestor
+  class SurfLlmIngestor < LlmIngestor
     def self.config
       {
-        key: 'surf_event',
-        title: 'Surf Events API',
+        key: 'surf_llm_event',
+        title: 'Surf LLM Events API',
         category: :events
       }
     end
 
-    def read(url)
-      begin
-        process_surf(url)
-      rescue Exception => e
-        @messages << "#{self.class.name} failed with: #{e.message}"
-      end
-
-      # finished
-      nil
-    end
-
     private
 
-    def process_surf(url)
+    def process_llm(url)
       Hash.from_xml(Nokogiri::XML(open_url(url, raise: true)).to_s)['urlset']['url'].each do |event_page|
         next unless event_page['loc'].include?('/en/agenda/')
 

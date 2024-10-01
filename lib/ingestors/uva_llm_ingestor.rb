@@ -2,29 +2,18 @@ require 'open-uri'
 require 'csv'
 
 module Ingestors
-  class UvaIngestor < LlmIngestor
+  class UvaLLmIngestor < LlmIngestor
     def self.config
       {
-        key: 'uva_event',
-        title: 'UvA Events API',
+        key: 'uva_llm_event',
+        title: 'UvA LLM Events API',
         category: :events
       }
     end
 
-    def read(url)
-      begin
-        process_uva(url)
-      rescue Exception => e
-        @messages << "#{self.class.name} failed with: #{e.message}"
-      end
-
-      # finished
-      nil
-    end
-
     private
 
-    def process_uva(url)
+    def process_llm(url)
       # execute REST request
       results = get_json_response url
       data = results.to_h['items']

@@ -36,7 +36,10 @@ module Ingestors
     def self.llm_ingestors
       [
         Ingestors::FourtuLlmIngestor,
-        Ingestors::LcrdmLlmIngestor
+        Ingestors::LcrdmLlmIngestor,
+        Ingestors::SurfLlmIngestor,
+        Ingestors::UvaLlmIngestor,
+        Ingestors::LibcalLlmIngestor
       ]
     end
 
