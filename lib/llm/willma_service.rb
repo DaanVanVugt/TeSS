@@ -7,6 +7,7 @@ module Llm
     require 'openai'
     def initialize
       model_name = TeSS::Config.llm_scraper['model_version']
+      puts model_name
       login_url = 'https://willma.soil.surf.nl/api/login'
       JSON.parse(do_request(login_url, 'post', {}).body)
 
@@ -25,7 +26,9 @@ module Llm
 
     def run(content)
       msg = call(content)['message']
-      get_first_json_from_string(msg)
+      beep = get_first_json_from_string(msg)
+      puts beep
+      beep
     end
 
     def call(prompt)

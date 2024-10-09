@@ -1,16 +1,44 @@
-Based on the following webpage describing a research event:
+Your task is to study a web page of an event and to enrich it with meta-data.
+Please study the web page of the event in triple quotes and derive six pieces of meta-data: title, organizer, description, start, end, venue.
+
+# title
+The title of the event.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# organizer
+The organisation that hosts the event.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# description
+A description of what will happen at the event in less than 400 characters.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# start
+The local start time of the event.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# end
+The local end time of the event.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# venue
+The venue where the event is hosted.
+Think through this and explain your reasoning step-by-step before giving your final answer.
+
+# final result
+The final line should be formatted as JSON so it can easily be parsed by a program, like:
+{
+  "title": "event_title",
+  "organizer": "event_organizer",
+  "description": "event_description",
+  "start": "event_start",
+  "end": "event_end",
+  "venue": "event_venue"
+}
+Make sure the last JSON attribute is not followed by a comma.
+Make sure the full JSON fits inside the response.
+
+JSON code:
+'''
 *replace_with_event_page*
-
-Give me a valid json string describing a research themed event with the following format:
-
-title (string): The title of the event
-organizer (string): The organisation that hosts the event
-description (string): A description of what will happen at the event
-start (date or datetime): The local starting time of the event
-end (date or datetime): The local end time of the event
-venue (string): The venue where the event is hosted
-
-Instead of generating values for missing attributes, fill them with null.
-Summarize the description in less than 400 characters please.
-Make sure the last json attribute is not followed by a comma.
-Make sure the full json fits inside the response.
+'''
